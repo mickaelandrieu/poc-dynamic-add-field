@@ -7,13 +7,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use AppBundle\Form\EventListener\AddFieldSubscriber;
-use AppBundle\Services\FormFieldProvider;
+use AppBundle\Services\FormProviderInterface;
 
 class TodoType extends AbstractType
 {
     private $formFieldProvider;
 
-    public function __construct(FormFieldProvider $formFieldProvider)
+    public function __construct(FormProviderInterface $formFieldProvider)
     {
         $this->formFieldProvider = $formFieldProvider;
     }

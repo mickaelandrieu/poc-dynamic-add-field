@@ -1,9 +1,15 @@
 services:
     app.form.type.todo:
         class: AppBundle\Form\TodoType
-        arguments: ['@app.field.provider']
+        arguments: ['@app.form_field.provider']
         tags:
             - { name: form.type }
 
-    app.field.provider:
-        class: AppBundle\Services\FormFieldProvider
+    app.form_field.provider:
+        class: 'AppBundle\Services\FormProvider'
+
+    app.add_description_field:
+        class: 'AppBundle\Services\DescriptionFieldProvider'
+        arguments: ['@form.factory']
+        tags:
+            - { name: 'form.field_provider'}
