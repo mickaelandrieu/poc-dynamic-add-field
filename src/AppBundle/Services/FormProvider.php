@@ -2,15 +2,25 @@
 namespace AppBundle\Services;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FormProvider implements FormProviderInterface
 {
+    /**
+     * @var ParameterBag
+     */
     private $fields;
 
-    public function __construct()
+    /**
+     * @var FormFactory
+     */
+    private $formFactory;
+
+    public function __construct(FormFactory $formFactory)
     {
         $this->fields = new ParameterBag();
+        $this->formFactory = $formFactory;
     }
 
     public function addFieldProvider(FormFieldProviderInterface $fieldProvider)
@@ -22,7 +32,17 @@ class FormProvider implements FormProviderInterface
 
             $forms = $this->fields->get($formName);
             foreach($fields as $field) {
-                $forms[] = $field;
+                $forms[] = $this->formFactory->createNamed(
+                    $field['name'],
+                    $field['type'],
+                    $field['data'],
+                    array_merge(
+                        $field['options'],
+                        [
+                            'auto_initialize' => false,
+                        ]
+                    )
+                );
             }
 
             $this->fields->set($formName, $forms);

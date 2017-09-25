@@ -7,9 +7,9 @@ services:
 
     app.form_field.provider:
         class: 'AppBundle\Services\FormProvider'
+        arguments: ['@form.factory']
 
     app.add_description_field:
         class: 'AppBundle\Services\DescriptionFieldProvider'
-        arguments: ['@form.factory']
         tags:
             - { name: 'form.field_provider'}
