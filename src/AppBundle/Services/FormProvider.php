@@ -2,7 +2,8 @@
 namespace AppBundle\Services;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FormProvider implements FormProviderInterface
@@ -13,11 +14,11 @@ class FormProvider implements FormProviderInterface
     private $fields;
 
     /**
-     * @var FormFactory
+     * @var FormFactoryInterface
      */
     private $formFactory;
 
-    public function __construct(FormFactory $formFactory)
+    public function __construct(FormFactoryInterface $formFactory)
     {
         $this->fields = new ParameterBag();
         $this->formFactory = $formFactory;
@@ -32,6 +33,12 @@ class FormProvider implements FormProviderInterface
 
             $forms = $this->fields->get($formName);
             foreach($fields as $field) {
+                if ($field instanceof FormInterface) {
+                    $forms[] = $field;
+
+                    continue;
+                }
+
                 $forms[] = $this->formFactory->createNamed(
                     $field['name'],
                     $field['type'],

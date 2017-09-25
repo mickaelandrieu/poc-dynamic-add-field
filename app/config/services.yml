@@ -13,3 +13,7 @@ services:
         class: 'AppBundle\Services\DescriptionFieldProvider'
         tags:
             - { name: 'form.field_provider'}
+    app.add_date_field:
+        class: 'AppBundle\Services\DateFieldProvider'
+        tags:
+            - { name: 'form.field_provider'}
